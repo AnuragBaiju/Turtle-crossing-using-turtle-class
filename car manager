@@ -1,0 +1,60 @@
+from turtle import Turtle
+import random
+COLORS = [
+    "dark red",
+    "royal blue",
+    "green",
+    "dark slate gray",
+    "maroon",
+    "dark violet"
+]
+STARTING_MOVE_DISTANCE = 2.5
+MOVE_INCREMENT = 10
+LANE_POSITIONS = [-230, -180, -130, -80, -30, 20, 70, 120, 170, 220]
+
+
+class CarManager:
+
+    def __init__(self):
+        self.all_cars = {
+            'lane_1': [],
+            'lane_2': [],
+            'lane_3': [],
+            'lane_4': [],
+            'lane_5': [],
+            'lane_6': [],
+            'lane_7': [],
+            'lane_8': [],
+            'lane_9': [],
+            'lane_10': []
+        }
+
+    def create_car(self):
+        random_chance = random.randint(1, 20)
+        if random_chance == 1:
+            new_car = Turtle("square")
+            new_car.penup()
+            new_car.shapesize(stretch_wid=1, stretch_len=2)
+            new_car.color(random.choice(COLORS))
+            random_lane = random.randint(0, 9)
+            y_position = LANE_POSITIONS[random_lane]
+            new_car.goto(300, y_position)
+            self.all_cars[f'lane_{random_lane + 1}'].append(new_car)
+
+    def move_cars(self):
+        for lane, cars in self.all_cars.items():
+            for car in cars:
+                car.backward(STARTING_MOVE_DISTANCE)
+
+    def difficulty_increase(self):
+        global STARTING_MOVE_DISTANCE
+        STARTING_MOVE_DISTANCE += 0.7
+
+    def reset(self):
+        for lane in self.all_cars.values():
+            for car in lane:
+                car.hideturtle()
+            lane.clear()
+
+
+
