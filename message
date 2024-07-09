@@ -1,0 +1,22 @@
+import time
+from turtle import Turtle
+
+ALIGN = "center"
+FONT = ("courier", 20, "normal")
+
+
+class Message(Turtle):
+    def __init__(self):
+        super().__init__()
+        self.hideturtle()
+        self.hideturtle()
+        self.color("black")
+        self.goto(0, 0)
+
+    def game_over(self):
+        self.write("You've been squished by car\n"
+                   "        game over", align=ALIGN, font=FONT)
+
+    def next_level(self):
+        time.sleep(1)
+        self.write("Good job", align=ALIGN, font=FONT)
