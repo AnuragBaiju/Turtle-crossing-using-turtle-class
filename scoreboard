@@ -1,0 +1,22 @@
+from turtle import Turtle
+FONT = ("Courier", 24, "normal")
+
+
+class Scoreboard(Turtle):
+    def __init__(self):
+        super().__init__()
+        self.penup()
+        self.hideturtle()
+        self.color("black")
+        self.goto(-280, 260)
+        self.score = 0
+        self.scored()
+
+    def scored(self):
+        self.clear()
+        self.write(f"{self.score}", font=FONT)
+        self.score += 1
+
+    def reset_score(self):
+        self.score = 0
+        self.scored()
