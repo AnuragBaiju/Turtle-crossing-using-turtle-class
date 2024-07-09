@@ -1,0 +1,65 @@
+import time
+import turtle
+from player import Player
+from car_manager import CarManager
+from scoreboard import Scoreboard
+from message import Message
+
+screen = turtle.Screen()
+turtle.title("turtle crossing")
+screen.tracer(0)
+turtle.hideturtle()
+scoreboard = Scoreboard()
+player = Player()
+message = Message()
+car_manager = CarManager()
+
+
+screen.bgcolor("lightgray")
+screen.setup(width=600, height=600)
+
+
+def reset_game():
+    player.go_to_start()
+    scoreboard.reset_score()
+    car_manager.reset()
+    screen.update()
+
+
+game_is_on = True
+
+while game_is_on:
+    screen.listen()
+    screen.onkey(player.go_forward, "Up")
+    screen.onkey(player.go_forward, "w")
+    time.sleep(0.01)
+    screen.update()
+    car_manager.create_car()
+    car_manager.move_cars()
+    for lane in car_manager.all_cars.values():
+        for car in lane:
+            if player.distance(car) < 20:
+                message.game_over()
+                time.sleep(1)
+                car_manager.reset()
+                screen.update()
+                time.sleep(2)
+                response = turtle.textinput("Game Over", "Do you want to play again? (yes/no):")
+                message.clear()
+                if response.lower() == "yes":
+                    reset_game()
+                else:
+                    game_is_on = False
+                    break
+    if player.is_at_finishing_line():
+        turtle.write("Good job", align="center", font=("courier", 20, "normal"))
+        time.sleep(0.5)
+        car_manager.reset()
+        car_manager.difficulty_increase()
+        screen.update()
+        time.sleep(2)
+        turtle.clear()
+        screen.update()
+        player.go_to_start()
+        scoreboard.scored()
+
